@@ -27,6 +27,6 @@ jobs:
         with:
           push: true
           tags: |
-            ghcr.io/${{ github.repository }}:${{ github.sha }}
-            ghcr.io/${{ github.repository }}:latest
+            ghcr.io/penpen7/pprotein:${{ github.sha }}
+            ghcr.io/penpen7/pprotein:latest
           platform: linux/amd64,linux/arm64
