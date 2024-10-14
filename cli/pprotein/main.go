@@ -1,6 +1,8 @@
 package main
 
 import (
+	"crypto/tls"
+	"log"
 	"net/http"
 	"os"
 
@@ -15,6 +17,7 @@ import (
 	"github.com/kaz/pprotein/internal/storage"
 	"github.com/kaz/pprotein/view"
 	"github.com/labstack/echo/v4"
+	"golang.org/x/net/http2"
 )
 
 func start() error {
@@ -22,6 +25,16 @@ func start() error {
 	if port == "" {
 		port = "9000"
 	}
+
+	tr := &http.Transport{
+		TLSClientConfig: &tls.Config{
+			InsecureSkipVerify: true,
+		},
+	}
+	if err := http2.ConfigureTransport(tr); err != nil {
+		log.Fatalf("Failed to configure h2 transport: %s", err)
+	}
+	http.DefaultClient.Transport = tr
 
 	store, err := storage.New("data")
 	if err != nil {
