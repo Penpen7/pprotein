@@ -2,7 +2,6 @@ package main
 
 import (
 	"crypto/tls"
-	"log"
 	"net/http"
 	"os"
 
@@ -32,7 +31,7 @@ func start() error {
 		},
 	}
 	if err := http2.ConfigureTransport(tr); err != nil {
-		log.Fatalf("Failed to configure h2 transport: %s", err)
+		return err
 	}
 	http.DefaultClient.Transport = tr
 
