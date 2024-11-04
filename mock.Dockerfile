@@ -3,8 +3,10 @@
 FROM golang:alpine AS agent
 
 WORKDIR $GOPATH/src/app
+RUN --mount=type=bind,source=go.sum,target=go.sum \
+    --mount=type=bind,source=go.mod,target=go.mod \
+    go mod download -x
 COPY . .
-
 RUN go build ./cli/pprotein-agent
 
 # --------------------------------------------------
@@ -12,8 +14,10 @@ RUN go build ./cli/pprotein-agent
 FROM golang:alpine AS mock
 
 WORKDIR $GOPATH/src/app
+RUN --mount=type=bind,source=go.sum,target=go.sum \
+    --mount=type=bind,source=go.mod,target=go.mod \
+    go mod download -x
 COPY . .
-
 RUN go build ./cli/pprotein-mock
 
 # --------------------------------------------------
